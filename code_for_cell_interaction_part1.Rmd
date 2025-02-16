@@ -1,0 +1,679 @@
+---
+title: "cellphonedb_dotplot"
+author: "Jihyun Lee"
+date: "2024-08-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd ("~/Desktop/MIBC Cellphonedb")
+getwd()
+
+```
+
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+#cellranger_output_directory_bladder_harmony_cellphone_adata_1077_moccgcellphoneresult.csv
+
+
+adata1077<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_adata_1077_moccgcellphoneresult.csv", #row.names="Gene"
+                        )
+
+adata1077$ligand_receptor <- paste(adata1077$ligand,"_",adata1077$receptor)
+adata1077$source_target <- paste(adata1077$source,"_",adata1077$target)
+adata1077$ligand_receptor_source_target<- paste(adata1077$ligand,"_",adata1077$receptor,"_", adata1077$source,"_",adata1077$target)
+adata1077
+
+
+
+```
+
+
+```{r}
+#lapply(list.files(pattern = "\\.csv$"), data.table::fread, 
+ #      select = c("names.of", "columns", "I.want"))
+
+adata1002<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1002cellphoneresult.csv")
+adata1029<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1029cellphoneresult.csv")
+adata1077_gex<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1077_gexcellphoneresult.csv")
+adata1078_gex<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1078_gexcellphoneresult.csv")
+adata1078<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1078cellphoneresult.csv")
+adata1106<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1106cellphoneresult.csv")
+adata1118<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1118cellphoneresult.csv")
+adata1120<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1120cellphoneresult.csv")
+adata1127<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1127cellphoneresult.csv")
+adata1146<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1146cellphoneresult.csv")
+adata1149<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1149cellphoneresult.csv")
+adata1157<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1157cellphoneresult.csv")
+adata1157moccg<-read.csv(file="cellranger_output_directory_bladder_harmony_cellphone_MIBC1157moccgcellphoneresult.csv")
+
+i_data <- adata1002
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1002 <- i_data 
+
+i_data <- adata1029
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1029 <- i_data 
+
+i_data <- adata1077_gex
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1077_gex <- i_data 
+
+i_data <- adata1078_gex
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1078_gex <- i_data 
+
+i_data <- adata1078
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1078 <- i_data 
+
+i_data <- adata1106
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1106 <- i_data 
+
+i_data <- adata1118
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1118 <- i_data 
+
+i_data <- adata1120
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1120 <- i_data 
+
+i_data <- adata1127
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1127 <- i_data 
+
+i_data <- adata1146
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1146 <- i_data 
+
+i_data <- adata1149
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1149 <- i_data 
+
+i_data <- adata1157
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1157 <- i_data 
+
+i_data <- adata1157moccg
+i_data$ligand_receptor_source_target<- paste(i_data$ligand,"_",i_data$receptor,"_", i_data$source,"_",i_data$target)
+i_data$ligand_receptor <- paste(i_data$ligand,"_",i_data$receptor)
+i_data$source_target <- paste(i_data$source,"_",i_data$target)
+adata1157moccg <- i_data 
+
+
+
+```
+
+
+
+
+```{r}
+markers_data <- read.csv(file="manually pick markers.csv")
+markers_data$ligand_receptor <- paste(markers_data$ligand,"_",markers_data$receptor)
+markers_data
+markers_data$source_target <- paste(markers_data$source,"_",markers_data$target)
+markers_data$ligand_receptor_source_target<- paste(markers_data$ligand,"_",markers_data$receptor,"_", markers_data$source,"_",markers_data$target)
+
+markers <- markers_data$ligand_receptor_source_target
+markers
+
+```
+markers <- c("C1QB_C1QBP",
+             "IL6_IL6R",
+             "SPP1_CD44",
+             "APOE_LRP8",
+             "IL18_IL18R1",
+             "TNFSF11_LGR4", #"IL18_IL18R1"
+             "TNFSF4_TRAF2",
+             "IL6_IL6R", #"IL6_IL6R"
+             "TIGIT_NECTIN2",
+             "CCL28_ACKR2",
+             "LILRB4_LAIR1",
+             "ICAM1_ITGAM",
+             "CXCL16_CXCR6",
+             "S100A8_CD36",
+             "HLA-B_LILRB2",
+             "THBS1_ITGA6",
+             "JAML_CXADR",
+             "TNFSF13_FAS",
+             "BMP1_BMPR1B",
+             "BMP2_BMPR1B",
+             "IL1B_IL1R1",
+             "HLA-B_LILRB1",
+             "TNFSF8_TNFRSF8",
+             "TNFSF14_TNFRSF14",
+             "TIMP2_ITGA3",
+             "FN1_ITGB6",
+             "TGFB2_TGFBR3",
+             "IL18_IL18R1")
+
+
+```{r}
+adata1077
+markers
+
+
+adata1077 <- adata1077 %>% filter(
+  ligand_receptor_source_target %in%  markers,  #c("versicolor", "virginica" )
+)
+
+adata1077$cellphone_pvals[adata1077$cellphone_pvals %in% 0] <- 0.0001
+
+adata1077$ng_log_cellphone_pvals <- -log10(adata1077$cellphone_pvals )
+adata1077$log2_lr_means <- log2(adata1077$lr_means)
+
+adata1077$ng_log_cellphone_pvals
+
+
+```
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+adata1077plot<- ggplot(adata1077, aes(x =source_target , y = ligand_receptor , color = lr_means
+, size = cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1077 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adata1077plot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","red","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+adata1077plot<- ggplot(adata1077, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1077 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adata1077plot +
+  #scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","red","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+    scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+df<- adata1077
+df$sample = rep("BLAD1077",nrow(df))
+
+
+```
+
+
+```{r}
+library(dplyr)
+adata1002
+markers
+
+adata1002 <- adata1002 %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata1002$cellphone_pvals[adata1002$cellphone_pvals %in% 0] <- 0.0001
+
+adata1002$ng_log_cellphone_pvals <- -log10(adata1002$cellphone_pvals )
+adata1002$log2_lr_means <- log2(adata1002$lr_means)
+adata1002$ng_log_cellphone_pvals
+```
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+adata1002plot<- ggplot(adata1002, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1002 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adata1002plot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+adata1029
+markers
+
+adata1029 <- adata1029 %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata1029$cellphone_pvals[adata1029$cellphone_pvals %in% 0] <- 0.0001
+
+adata1029$ng_log_cellphone_pvals <- -log10(adata1029$cellphone_pvals )
+adata1029$log2_lr_means <- log2(adata1029$lr_means)
+
+
+
+
+
+```
+
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+adata1029plot<- ggplot(adata1029, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1029 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adata1029plot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+
+adata <- adata1077_gex
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+ adata1077_gex<-adata
+
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1077_gex Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+
+adata <- adata1078
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1078<-adata
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1078 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+
+adata <- adata1078_gex
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1078_gex<-adata
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1078_gex Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+
+adata <- adata1106
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+adata
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1106 <- adata
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1106 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+
+adata <- adata1118
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1118<- adata
+
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1118 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.95, fig.height = 6.5}
+
+adata <- adata1120
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1120 <- adata
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1120 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.8, fig.height = 6.5}
+
+adata <- adata1127
+adata
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1127 <- adata
+
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1127 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 5.4, fig.height = 6.9}
+
+adata <- adata1146
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1146 <- adata
+
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1146 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r fig.align="center", echo = FALSE,fig.width = 5.4, fig.height = 6.9}
+
+adata <- adata1149
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1149 <- adata
+
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1149 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+```{r fig.align="center", echo = FALSE,fig.width = 5, fig.height = 6.3}
+
+adata <- adata1157
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1157 <- adata
+
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1157 Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r fig.align="center", echo = FALSE,fig.width = 4.4, fig.height = 5.9}
+
+adata <- adata1157moccg
+
+adata <- adata %>% filter(
+  ligand_receptor_source_target %in%  markers
+)
+
+adata$cellphone_pvals[adata$cellphone_pvals %in% 0] <- 0.0001
+
+adata$ng_log_cellphone_pvals <- -log10(adata$cellphone_pvals )
+adata$log2_lr_means <- log2(adata$lr_means)
+
+adata1157moccg <- adata
+
+
+adataplot<- ggplot(adata, aes(x =source_target , y = ligand_receptor , color = log2_lr_means
+, size = ng_log_cellphone_pvals)) + 
+  geom_point(stat = 'identity') +
+  geom_point(size=1)+
+  xlab("") + ylab("") + ggtitle("BLAD1157moccg Receptor-ligand interaction") + 
+  theme_classic() #theme_bw()
+
+adataplot +
+  scale_colour_gradientn(colours = c("darkblue", "#5F4B8BFF","white","#ED2B33FF","darkred")) + #,"darkred"))#, "orange", "yellow", "white"))
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+df
+adata1002
+adata1029
+adata1077_gex
+adata1078_gex
+```
+
+
+
+
+```{r}
+adata1002$sample = rep("BLAD1002",nrow(adata1002))
+adata1002
+df<-rbind(df,adata1002)
+df
+
+adata1029$sample = rep("BLAD1029",nrow(adata1029))
+df<-rbind(df,adata1029)
+
+adata1077_gex$sample = rep("BLAD1077_gex",nrow(adata1077_gex))
+adata1077_gex
+df<-rbind(df,adata1077_gex)
+
+adata1078_gex$sample = rep("BLAD1078_gex",nrow(adata1078_gex))
+df<-rbind(df,adata1078_gex)
+
+adata1078$sample = rep("BLAD1078",nrow(adata1078))
+df<-rbind(df,adata1078)
+
+adata1106$sample = rep("BLAD1106",nrow(adata1106))
+df<-rbind(df,adata1106)
+
+adata1118$sample = rep("BLAD1118",nrow(adata1118))
+df<-rbind(df,adata1118)
+
+adata1120$sample = rep("BLAD1120",nrow(adata1120))
+df<-rbind(df,adata1120)
+
+adata1127$sample = rep("BLAD1127",nrow(adata1127))
+df<-rbind(df,adata1127)
+
+adata1146$sample = rep("BLAD1146",nrow(adata1146))
+df<-rbind(df,adata1146)
+
+adata1149$sample = rep("BLAD1149",nrow(adata1149))
+df<-rbind(df,adata1149)
+
+adata1157$sample = rep("BLAD1157",nrow(adata1157))
+df<-rbind(df,adata1157)
+
+adata1157moccg$sample = rep("BLAD1157moccg",nrow(adata1157moccg))
+df<-rbind(df,adata1157moccg)
+
+df
+
+
+write.csv(df,"final_heatmap.csv", row.names = FALSE)
+
+
+```
